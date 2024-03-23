@@ -149,12 +149,16 @@ window.onload = function()
     // ZAZNACZ WIELE LEADOW I WYŚWIETL FORMULARZ
     $(document).on('click','.btn-add-task-to-many',function(e)
     {
-        
-
-        
-
-
-
+        var ile = $(this).data('ile');
+        var grupaLeadow = $(this).closest('.grupa-leadow');
+        $('input[type="checkbox"][data-klient-id]', grupaLeadow).prop('checked', false);
+        if (ile > 0) {
+            $('input[type="checkbox"][data-klient-id]', grupaLeadow).slice(0, ile).prop('checked', true);
+            if ($('input[type="checkbox"][data-klient-id]:checked', grupaLeadow).length > 0) {
+                $('#czarne-tlo-przydziel-zadanie-form').show();
+                $('#czarne-tlo-przydziel-zadanie-form input[name="grupa_leadow"]').val(grupaLeadow.attr('id'));
+            }
+        }
     });
     
 
