@@ -1,6 +1,7 @@
 <?php
 // Zabezpieczenia 
 if(!$dostep_koordynator){$alert = 'notAllowed';}
+$user_mod='root';
 
 function breadcrumb(){ ?>
 <ol class="breadcrumb">
@@ -39,7 +40,7 @@ for ($i = 0; $i < 9; $i++) {
  
 // HTML
 breadcrumb();
-alert($alert); ?>
+//alert($alert); ?>
 
 <div class="containter">
     <div class="page-header">
@@ -246,8 +247,8 @@ window.onload = function()
 
 function  pokaz_leady(){
     $.ajax({
-        url: "irpLeadsListAAjax.php",
-        method: "POST",
+        url: "/clf-php-dev-legacy-code/irpLeadsListAAjax.php",
+        type: "POST",
         data: {user:'<?=$user_mod?>'},
         dataType: "json",
         beforeSend: function(){pokazPrzetwarzam();}
@@ -266,14 +267,14 @@ function  pokaz_leady(){
                     var d2 = ((d1.length === 11 || d1.length === 12) && d1.indexOf("48")===0) ? d1.substr(2) : d1;
                     var d3 = ((d2.length === 10) && d2.indexOf("0")===0) ? d2.substr(1) : d2;
                     var d4 = (d3.length === 9 ) ? d3.replace(/^(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3') : v.telefon;
-                    var level = v.level === 'klient' ? '<span class="label label-primary">KLIENT</span>' : '<span class="label label-success">UCZESTNIK</span>';                
+                    var level = v.level === 'klient' ? '<span class="label label-primary">KLIENT</span>' : '<span class="label label-success">UCZESTNIK</span>';
                     var rowNode = table.row.add( [
-                        '<a href="/klientKarta&id='+v.klient_id+'" target="_blank">'+v.klient+'&nbsp;<small><span class="glyphicon glyphicon-new-window"></span></small></a>', 
+                        '<a href="/klientKarta&id='+v.klient_id+'" target="_blank">'+v.klient+'&nbsp;<small><span class="glyphicon glyphicon-new-window"></span></small></a>',
                         d4,
                         v.email,
                         level,
                         '<input data-klient-id="'+v.klient_id+'" type="checkbox">'
-                    ] 
+                    ]
                     ).node();
                     $(rowNode).attr('id','klient-'+v.klient_id+'-row');
                     $('td:eq(4),td:eq(5)',rowNode).addClass( 'text-center');
@@ -288,6 +289,9 @@ function  pokaz_leady(){
     })
     .fail(function(){bootbox.alert("Nie udało się wysłać żądania.");})
     .complete(function(){$('#czarne-tlo-przetwarzam').hide();});
+};
+
+function pokazPrzetwarzam() {
 };
 
 </script>

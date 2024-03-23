@@ -1,6 +1,7 @@
 <?php
 require 'config.php';
 
+
 if (isset($_POST['user']) && array_key_exists($_POST['user'], $access_array) && in_array('dostep_koordynator', $access_array[$_POST['user']])) {
     $link = mysqlConnect();
     $data = array();
@@ -46,7 +47,7 @@ if (isset($_POST['user']) && array_key_exists($_POST['user'], $access_array) && 
  * | 127 |Lekcja 12   |
  * ____________________
  */
-    $query = 
+    $query =
 "DROP TEMPORARY TABLE IF EXISTS __wykluczenia0;
 CREATE TEMPORARY TABLE __wykluczenia0 (klient_id INT NOT NULL, PRIMARY KEY (klient_id))
 AS
@@ -56,13 +57,13 @@ SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (58) AND ss
 UNION 
 SELECT  ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (9,46,48,49,51,52)
 UNION 
-SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (15,16,18,21,23,38,54,55, 40,50,53,65) AND ss.status IN ('otwarta')
+SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (15,16,18,21,23,38,54,55,40,50,53,65,62) AND ss.status IN ('otwarta')
 UNION 
 SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (40,50,53,65) AND ss.status IN ('wygrana')
 UNION 
 SELECT t.klient_id FROM `tagi` t WHERE t.tagId IN (10,11,24,32)
 UNION 
-SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (40,50,53,65, 15,16,18,21,23,38,54,55) 
+SELECT ss.klient_id FROM `szanseSprzedazy` ss WHERE ss.id_procesu IN (40,50,53,65,15,16,18,21,23,38,54,55,62) 
     AND ss.status IN('przegrana') AND ss.data_zakonczenia > date_sub(curdate(),interval 1 MONTH)	
 UNION 
 SELECT z.klient_id FROM zamowienia z JOIN faktury f ON f.id_zamowienia = z.id WHERE z.status IN('do opłacenia') AND z.zaplacone = 'nie' AND f.rodzaj_faktury = 'VAT'
@@ -119,10 +120,10 @@ WHERE
     for($i=1;$i<8;$i++){
         mysqli_next_result($link);
     }
-    
+
     $i = 0;
     while (mysqli_more_results($link) && mysqli_next_result($link)) {
-        
+
         if ($result = mysqli_store_result($link)) {
             $data[$i] = [];
             while ($w = mysqli_fetch_assoc($result)) {
