@@ -65,6 +65,7 @@ breadcrumb();
                         <th>Telefon</th>
                         <th>E-mail</th>
                         <th style="width: 60px;">Level</th>
+                        <th>Produkt</th>
                         <th style="width: 50px;">zaznacz</th>
                     </tr>
                 </thead>
@@ -93,6 +94,7 @@ breadcrumb();
                         <th>Telefon</th>
                         <th>E-mail</th>
                         <th style="width: 60px;">Level</th>
+                        <th>Produkt</th>
                         <th style="width: 50px;">zaznacz</th>
                     </tr>
                 </thead>
@@ -273,6 +275,7 @@ function  pokaz_leady(){
                         d4,
                         v.email,
                         level,
+                        v.produkt,
                         '<input data-klient-id="'+v.klient_id+'" type="checkbox">'
                     ]
                     ).node();

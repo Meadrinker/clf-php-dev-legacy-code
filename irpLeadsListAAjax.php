@@ -10,7 +10,7 @@ if (isset($_POST['user']) && array_key_exists($_POST['user'], $access_array) && 
  * Szanse sprzedazy (id_procesu)
  *
  * 3M
- * 15 - MPK,
+ * 15 - MPK,1
  * 16 - SU,
  * 18 - ZM,
  * 21 - NP,
@@ -85,7 +85,7 @@ UNION SELECT klient_id FROM __wykluczenia1
 UNION SELECT klient_id FROM __wykluczenia2;
 
 
-SELECT k.id, k.imie, k.nazwisko, k.email, k.telefon, k.level
+SELECT k.id, k.imie, k.nazwisko, k.email, k.telefon, k.level, pr.nazwa
 FROM `klienci` k 
 JOIN uczestnicyProgramu u ON u.klient_id = k.id
 JOIN (
@@ -95,12 +95,13 @@ JOIN (
     GROUP BY uczestnik_id 
     HAVING max=118
 ) AS t2 ON t2.uczestnik_id = u.uczestnik_id
+LEFT JOIN produkty pr ON t2.max = pr.id
 WHERE
     k.level = 'uczestnik' 
     AND k.status = 'aktywny'
     AND NOT EXISTS(SELECT 1 FROM __wykluczenia w WHERE w.klient_id = k.id);
     
-SELECT k.id, k.imie, k.nazwisko, k.email, k.telefon, k.level
+SELECT k.id, k.imie, k.nazwisko, k.email, k.telefon, k.level, pr.nazwa
 FROM `klienci` k 
 JOIN uczestnicyProgramu u ON u.klient_id = k.id
 JOIN (
@@ -110,6 +111,7 @@ JOIN (
     GROUP BY uczestnik_id 
     HAVING max>118
 ) AS t2 ON t2.uczestnik_id = u.uczestnik_id
+LEFT JOIN produkty pr ON t2.max = pr.id
 WHERE
     k.level = 'uczestnik' 
     AND k.status = 'aktywny'
@@ -132,7 +134,8 @@ WHERE
                     'klient'    => $w['imie'] . ' ' . $w['nazwisko'],
                     'telefon'   => $w['telefon'],
                     'email'     => $w['email'],
-                    'level'     => $w['level']
+                    'level'     => $w['level'],
+                    'produkt'   => $w['nazwa']
                 );
             }
             $result->free();
